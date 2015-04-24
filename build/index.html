@@ -12,7 +12,7 @@
 
       <script>
         $(function() {
-          setupLanguages(["javascript","html"]);
+          setupLanguages(["javascript"]);
         });
       </script>
   </head>
@@ -28,7 +28,6 @@
       <div class="title" style="padding:10px;color:#fff;font-size:32px">H5 开发指南</div>
         <div class="lang-selector">
               <a href="#" data-language-name="javascript">javascript</a>
-              <a href="#" data-language-name="html">html</a>
         </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
@@ -40,14 +39,193 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <p>includes:
-  - create</p>
+        <h1 id="tips">tips</h1>
+
+<aside class="notice">
+注：如beta上某些组件404，可通过访问
+http://192.168.5.78:3345/sync-service/packagename/packageversion
+        例：
+http://192.168.5.78:3345/sync-service/riot/0.1.2
+</aside>
+
+          <h1 id="项目创建">项目创建</h1>
+
+<ul>
+<li><p>​使用cortex，需要将version升到6.1.8及以上</p></li>
+<li><p>安装静态站初始化模板 <code class="prettyprint">git clone git@code.dianpingoa.com:f2ei/cortex-site-template.git ~/.cortex/templates/site</code></p></li>
+<li><p><code class="prettyprint">cortex init</code>提示选择模板，或直接<code class="prettyprint">cortex init site</code> 直接选择静态站模板</p></li>
+<li><p>提示<code class="prettyprint">bizname选项，填写业务名，对应的</code>cortex-ci.static-site-ftp.bizname<code class="prettyprint">这样的</code>lionkey​<code class="prettyprint">，这里我们以</code>app-newwallet-static<code class="prettyprint">为例，填写为</code>newwallet`,目录结构如下。</p></li>
+</ul>
+
+<p><img src="/images/1.png"/></p>
+
+<p>部分目录和文件介绍：</p>
+
+<ul>
+<li><p><code class="prettyprint">​​entries</code>:存放js文件</p></li>
+<li><p><code class="prettyprint">img</code>:存在图片和背景图片</p></li>
+<li><p><code class="prettyprint">less</code>:编译css，会在根目录下编译生成一个css文件</p></li>
+<li><p><code class="prettyprint">build.sh</code>:发布脚步，可无视</p></li>
+<li><p><code class="prettyprint">static-site.json</code>:发布脚本，上传<code class="prettyprint">html</code>文件</p></li>
+<li><p><code class="prettyprint">handlebar</code>:<code class="prettyprint">html</code>模板文件，会在根目录下编译生成最终的<code class="prettyprint">html</code>文件</p></li>
+</ul>
+
+<aside class="notice">
+填写对应环境配置，即lionkey的值。目前lionkey暂时由专门人来负责配置，用于上传`html`文件到指定服务器上，可找徐嘉轶或者YYY来开通
+</aside>
+
+          <h1 id="部署、打包、上线">部署、打包、上线</h1>
+
+<blockquote>
+<p>static-site.json文件</p>
+</blockquote>
+<pre><code class="highlight javascript"><span class="p">{</span>
+  <span class="s2">"ftpkey"</span><span class="err">:</span> <span class="s2">"cortex-ci.static-site-ftp.newwallet"</span><span class="p">,</span>
+  <span class="s2">"html_dir"</span><span class="err">:</span> <span class="s2">"html"</span>
+<span class="p">}</span>
+</code></pre>
+
+<p><code class="prettyprint">html</code>文件由模板文件生成，通过构造工具配置。已配好，了解下就好。</p>
+
+<blockquote>
+<p>gulpfile.js文件部分代码(解析html代码)</p>
+</blockquote>
+<pre><code class="highlight javascript"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'html'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{;</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">template_dir</span> <span class="o">+</span> <span class="s2">"/**/*.html"</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">compiler</span><span class="p">({</span>
+      <span class="na">cwd</span><span class="p">:</span> <span class="nx">__dirname</span>
+    <span class="p">}).</span><span class="nx">compile</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">html_dir</span><span class="p">));</span>
+<span class="p">});</span>
+
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'site-html'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
+  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">template_dir</span> <span class="o">+</span> <span class="s2">"/**/*.html"</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">compiler</span><span class="p">({</span>
+      <span class="na">hosts</span><span class="p">:</span> <span class="nx">isDev</span> <span class="p">?</span> <span class="kc">null</span> <span class="p">:</span> <span class="nx">ciconfig</span><span class="p">(</span><span class="s1">'hosts'</span><span class="p">),</span>
+      <span class="na">mod_root</span><span class="p">:</span> <span class="s2">"/mod"</span><span class="p">,</span>
+      <span class="na">template_dir</span><span class="p">:</span> <span class="nx">template_dir</span><span class="p">,</span>
+      <span class="na">cwd</span><span class="p">:</span> <span class="nx">__dirname</span>
+    <span class="p">}).</span><span class="nx">compile</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">html_dir</span><span class="p">));</span>
+<span class="p">});</span>
+</code></pre>
+
+<blockquote>
+<p>依赖模块<code class="prettyprint">gulp-tpl2mod</code>，需自行添加</p>
+</blockquote>
+
+<p>项目打包依然基于<code class="prettyprint">cortex</code>，构建工具选择时选择<code class="prettyprint">cortex-ci</code>。</p>
+
+<p>跟传统的<code class="prettyprint">cortex-ci</code>区别：部署时候会根据根目录下<code class="prettyprint">static-site.json</code>文件，去读取相应的<code class="prettyprint">lion</code>配置的h5静态服务器地址，将<code class="prettyprint">html</code>文件上传h5静态服务器</p>
+
+          <h1 id="离线缓存">离线缓存</h1>
+
+<p>我们采用<code class="prettyprint">manifest</code>来实现离线缓存。</p>
+
+<p><code class="prettyprint">manifest</code>文件目前和<code class="prettyprint">html</code>放在一起，通过<code class="prettyprint">ftp</code>上传到<code class="prettyprint">h5</code>服务器上。以<code class="prettyprint">app-newwallet-static</code>项目为例。</p>
+
+<p>跟<code class="prettyprint">html</code>一样，<code class="prettyprint">appcache</code>文件由<code class="prettyprint">appcache</code>模板文件生成。</p>
+
+<p><img src="/images/3.png"/></p>
+
+<blockquote>
+<p>appcache 示例</p>
+</blockquote>
+<pre><code class="highlight javascript">
+<span class="nx">CACHE</span> <span class="nx">MANIFEST</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/luckymoney_background_right.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/luckymoney_background_middle.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/luckymoney_background_right.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../css/index.css'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/icon_luckymoney.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-x-top.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-x-bottom.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-y-left.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-y-right.png'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'dpapp'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'zepto'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'hippo'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'util-efte-loading'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'huatuo'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'model-data'</span><span class="p">}}}</span>
+<span class="p">.</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span>
+<span class="nl">NETWORK</span><span class="p">:</span>
+<span class="o">*</span>
+
+</code></pre>
+
+<blockquote>
+<p>静态文件使用<code class="prettyprint">{{{static &#39;path&#39;}}}</code>标签</p>
+
+<p>依赖的<code class="prettyprint">js</code>使用<code class="prettyprint">{{{modfile &#39;dpapp&#39;}}}</code>标签</p>
+</blockquote>
+
+<p>扩展<code class="prettyprint">gulpfile</code>,复用处理<code class="prettyprint">html</code>逻辑。
+<img src="/images/3-1.png"/></p>
+
+          <h1 id="开发策略">开发策略</h1>
+
+<blockquote>
+<p>gulp task 配置</p>
+</blockquote>
+<pre><code class="highlight javascript">
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'tpl2mod'</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">path</span><span class="p">.</span><span class="nx">join</span><span class="p">(</span><span class="nx">__dirname</span><span class="p">,</span> <span class="s1">'./entries/**/*.html'</span><span class="p">))</span>
+      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">tpl</span><span class="p">({</span>
+        <span class="na">prefix</span><span class="p">:</span> <span class="s1">'module.exports='</span><span class="p">,</span>
+        <span class="na">suffix</span><span class="p">:</span><span class="s2">";"</span>
+      <span class="p">}))</span>
+      <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="s2">"./entries"</span><span class="p">));</span>
+<span class="p">});</span>
+
+</code></pre>
+
+<blockquote>
+<p>依赖<code class="prettyprint">gulp-tpl2mod</code>,自行添加</p>
+</blockquote>
+
+<p><code class="prettyprint">h5</code>静态页面开发类似于单页应用了，这里采用 M/V 的模式进行开发，便于公共部分的提取以及便于项目维护。</p>
+
+<p>暂且使用数据管理组件<code class="prettyprint">util-model-data</code>来控制<code class="prettyprint">model</code>数据，提供了数据缓存以及数据的生命周期功能（文件地址：<code class="prettyprint">http://mo-doc.f2e.dp/#/detail/util-model-data</code>）</p>
+
+<p>使用<code class="prettyprint">riot</code>来控制单项<code class="prettyprint">view</code>（文档地址：https://muut.com/riotjs/）。个人推荐使用<code class="prettyprint">riot</code>来控制<code class="prettyprint">view</code>:<code class="prettyprint">api</code>较少，上手容易；兼容性强，可与其他常见库一起使用，<code class="prettyprint">zepto</code>、<code class="prettyprint">underscore</code>等；最重要是riot非常小，min下才6kb。经过升级，目前已兼容ie7及以上</p>
+
+<p><img src="/images/4-1.png"/></p>
+
+<p>项目结构如下。</p>
+
+<ul>
+<li><strong>component</strong>：业务模块，可提取成一个公用模块</li>
+<li><strong>model</strong>：数据层</li>
+<li><strong>index.js</strong>：门户js</li>
+</ul>
+
+<aside class="notice">
+  注：`template.html.js`文件通过`gulp`自动生成。
+</aside>
+
+          <h1 id="更新机制">更新机制</h1>
+
+<p>CDN页面缓存时间为10分钟，每次发布新版时，可能需要等待10分钟才能看见新版。如处理紧急bug，可通知运维同学及时清理。</p>
+
+          <h1 id="tips">tips</h1>
+
+<aside class="notice">
+注：如`beta`上某些组件404，可通过访问
+<br/>
+`http://192.168.5.78:3345/sync-service/packagename/packageversion`
+<br/>
+例：
+<br/>
+`http://192.168.5.78:3345/sync-service/riot/0.1.2`
+</aside>
 
       </div>
       <div class="dark-box">
           <div class="lang-selector">
                 <a href="#" data-language-name="javascript">javascript</a>
-                <a href="#" data-language-name="html">html</a>
           </div>
       </div>
     </div>
