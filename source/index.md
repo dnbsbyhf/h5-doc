@@ -16,8 +16,6 @@ includes:
 search: true
 ---
 
-#tips
-
 <aside class="notice">
 注：如beta上某些组件404，可通过访问
 http://192.168.5.78:3345/sync-service/packagename/packageversion
