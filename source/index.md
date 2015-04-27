@@ -16,11 +16,4 @@ includes:
 search: true
 ---
 
-<aside class="notice">
-注：如beta上某些组件404，可通过访问
-http://192.168.5.78:3345/sync-service/packagename/packageversion
-        例：
-http://192.168.5.78:3345/sync-service/riot/0.1.2
-</aside>
-
 
