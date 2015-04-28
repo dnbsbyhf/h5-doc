@@ -19,7 +19,7 @@ gulp.task('tpl2mod',function(){
 
 `h5`静态页面开发类似于单页应用了，这里采用 M/V 的模式进行开发，便于公共部分的提取以及便于项目维护。
 
-暂且使用数据管理组件`util-model-data`来控制`model`数据，提供了数据缓存以及数据的生命周期功能（文件地址：`http://mo-doc.f2e.dp/#/detail/util-model-data`）
+暂且使用数据管理组件`model-data`来控制`model`数据，提供了数据缓存以及数据的生命周期功能（文件地址：`http://mo-doc.f2e.dp/#/detail/model-data`）
 
 使用`riot`来控制单项`view`（文档地址：https://muut.com/riotjs/）。个人推荐使用`riot`来控制`view`:`api`较少，上手容易；兼容性强，可与其他常见库一起使用，`zepto`、`underscore`等；最重要是riot非常小，min下才6kb。经过升级，目前已兼容ie7及以上
 

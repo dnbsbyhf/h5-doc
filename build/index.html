@@ -39,15 +39,7 @@
     <div class="page-wrapper">
       <div class="dark-box"></div>
       <div class="content">
-        <h1 id="tips">tips</h1>
-
-<aside class="notice">
-注：如beta上某些组件404，可通过访问
-http://192.168.5.78:3345/sync-service/packagename/packageversion
-        例：
-http://192.168.5.78:3345/sync-service/riot/0.1.2
-</aside>
-
+        
           <h1 id="项目创建">项目创建</h1>
 
 <ul>
@@ -188,7 +180,7 @@ http://192.168.5.78:3345/sync-service/riot/0.1.2
 
 <p><code class="prettyprint">h5</code>静态页面开发类似于单页应用了，这里采用 M/V 的模式进行开发，便于公共部分的提取以及便于项目维护。</p>
 
-<p>暂且使用数据管理组件<code class="prettyprint">util-model-data</code>来控制<code class="prettyprint">model</code>数据，提供了数据缓存以及数据的生命周期功能（文件地址：<code class="prettyprint">http://mo-doc.f2e.dp/#/detail/util-model-data</code>）</p>
+<p>暂且使用数据管理组件<code class="prettyprint">model-data</code>来控制<code class="prettyprint">model</code>数据，提供了数据缓存以及数据的生命周期功能（文件地址：<code class="prettyprint">http://mo-doc.f2e.dp/#/detail/model-data</code>）</p>
 
 <p>使用<code class="prettyprint">riot</code>来控制单项<code class="prettyprint">view</code>（文档地址：https://muut.com/riotjs/）。个人推荐使用<code class="prettyprint">riot</code>来控制<code class="prettyprint">view</code>:<code class="prettyprint">api</code>较少，上手容易；兼容性强，可与其他常见库一起使用，<code class="prettyprint">zepto</code>、<code class="prettyprint">underscore</code>等；最重要是riot非常小，min下才6kb。经过升级，目前已兼容ie7及以上</p>
 
