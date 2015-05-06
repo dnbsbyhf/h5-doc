@@ -10,6 +10,7 @@ includes:
   - cache  
   - dev
   - update
+  - view
   - tips
 
 

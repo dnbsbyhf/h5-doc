@@ -22,21 +22,8 @@ gulp.task('html', function() {;
     .on('error', console.error)
     .pipe(gulp.dest(html_dir));
 });
-
-gulp.task('site-html', function(){
-  return gulp.src([ template_dir + "/**/*.html"])
-    .pipe(compiler({
-      hosts: isDev ? null : ciconfig('hosts'),
-      mod_root: "/mod",
-      template_dir: template_dir,
-      cwd: __dirname
-    }).compile())
-    .on('error', console.error)
-    .pipe(gulp.dest(html_dir));
-});
 ```
 > 依赖模块`gulp-tpl2mod`，需自行添加
-
 
 
 

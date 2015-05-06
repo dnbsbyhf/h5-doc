@@ -46,7 +46,7 @@
 <li><p>​使用cortex，需要将version升到6.1.8及以上</p></li>
 <li><p>安装静态站初始化模板 <code class="prettyprint">git clone git@code.dianpingoa.com:f2ei/cortex-site-template.git ~/.cortex/templates/site</code></p></li>
 <li><p><code class="prettyprint">cortex init</code>提示选择模板，或直接<code class="prettyprint">cortex init site</code> 直接选择静态站模板</p></li>
-<li><p>提示<code class="prettyprint">bizname选项，填写业务名，对应的</code>cortex-ci.static-site-ftp.bizname<code class="prettyprint">这样的</code>lionkey​<code class="prettyprint">，这里我们以</code>app-newwallet-static<code class="prettyprint">为例，填写为</code>newwallet`,目录结构如下。</p></li>
+<li><p>提示<code class="prettyprint">bizname</code>选项，填写业务名，对应的<code class="prettyprint">cortex-ci.static-site-ftp.bizname</code>这样的<code class="prettyprint">lionkey​</code>，这里我们以<code class="prettyprint">app-newwallet-static</code>为例，填写为<code class="prettyprint">newwallet</code>,目录结构如下。</p></li>
 </ul>
 
 <p><img src="/images/1.png"/></p>
@@ -85,18 +85,6 @@
 <pre><code class="highlight javascript"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'html'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{;</span>
   <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">template_dir</span> <span class="o">+</span> <span class="s2">"/**/*.html"</span><span class="p">])</span>
     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">compiler</span><span class="p">({</span>
-      <span class="na">cwd</span><span class="p">:</span> <span class="nx">__dirname</span>
-    <span class="p">}).</span><span class="nx">compile</span><span class="p">())</span>
-    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">html_dir</span><span class="p">));</span>
-<span class="p">});</span>
-
-<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'site-html'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(){</span>
-  <span class="k">return</span> <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">template_dir</span> <span class="o">+</span> <span class="s2">"/**/*.html"</span><span class="p">])</span>
-    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">compiler</span><span class="p">({</span>
-      <span class="na">hosts</span><span class="p">:</span> <span class="nx">isDev</span> <span class="p">?</span> <span class="kc">null</span> <span class="p">:</span> <span class="nx">ciconfig</span><span class="p">(</span><span class="s1">'hosts'</span><span class="p">),</span>
-      <span class="na">mod_root</span><span class="p">:</span> <span class="s2">"/mod"</span><span class="p">,</span>
-      <span class="na">template_dir</span><span class="p">:</span> <span class="nx">template_dir</span><span class="p">,</span>
       <span class="na">cwd</span><span class="p">:</span> <span class="nx">__dirname</span>
     <span class="p">}).</span><span class="nx">compile</span><span class="p">())</span>
     <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
@@ -201,6 +189,15 @@
           <h1 id="更新机制">更新机制</h1>
 
 <p>CDN页面缓存时间为10分钟，每次发布新版时，可能需要等待10分钟才能看见新版。如处理紧急bug，可通知运维同学及时清理。</p>
+
+          <h1 id="访问地址">访问地址</h1>
+
+<p>以线上为例，访问地址为<code class="prettyprint">http://h5.dianping.com/tuan/bizname/xx</code>。<code class="prettyprint">xx</code>对于<code class="prettyprint">headlerbar</code>的根目录。
+例如<code class="prettyprint">app-newwallet-static</code>项目，</p>
+
+<p><img src="/images/6.png"/></p>
+
+<p>访问地址为<code class="prettyprint">http://h5.dianping.com/tuan/newwallet/index.html</code>;</p>
 
           <h1 id="tips">tips</h1>
 
