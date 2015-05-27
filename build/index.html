@@ -44,9 +44,9 @@
 
 <ul>
 <li><p>​使用cortex，需要将version升到6.1.8及以上</p></li>
-<li><p>安装静态站初始化模板 <code class="prettyprint">git clone git@code.dianpingoa.com:f2ei/cortex-site-template.git ~/.cortex/templates/site</code></p></li>
-<li><p><code class="prettyprint">cortex init</code>提示选择模板，或直接<code class="prettyprint">cortex init site</code> 直接选择静态站模板</p></li>
-<li><p>提示<code class="prettyprint">bizname</code>选项，填写业务名，对应的<code class="prettyprint">cortex-ci.static-site-ftp.bizname</code>这样的<code class="prettyprint">lionkey​</code>，这里我们以<code class="prettyprint">app-newwallet-static</code>为例，填写为<code class="prettyprint">newwallet</code>,目录结构如下。</p></li>
+<li><p>安装静态站初始化模板 <code class="prettyprint">git clone git@code.dianpingoa.com:app-static/cortex-sitey-template.git ~/.cortex/templates/sitey</code></p></li>
+<li><p><code class="prettyprint">cortex init</code>提示选择模板，或直接<code class="prettyprint">cortex init sitey</code> 直接选择静态站模板</p></li>
+<li><p>提示<code class="prettyprint">bizname</code>选项，填写业务名，对应的<code class="prettyprint">cortex-ci.static-site-ftp.bizname</code>这样的<code class="prettyprint">lionkey​</code>，这里我们以<code class="prettyprint">app-demo-static</code>为例，填写为<code class="prettyprint">demo</code>,目录结构如下。</p></li>
 </ul>
 
 <p><img src="/images/1.png"/></p>
@@ -57,9 +57,9 @@
 <li><p><code class="prettyprint">​​entries</code>:存放js文件</p></li>
 <li><p><code class="prettyprint">img</code>:存在图片和背景图片</p></li>
 <li><p><code class="prettyprint">less</code>:编译css，会在根目录下编译生成一个css文件</p></li>
-<li><p><code class="prettyprint">build.sh</code>:发布脚步，可无视</p></li>
-<li><p><code class="prettyprint">static-site.json</code>:发布脚本，上传<code class="prettyprint">html</code>文件</p></li>
-<li><p><code class="prettyprint">handlebar</code>:<code class="prettyprint">html</code>模板文件，会在根目录下编译生成最终的<code class="prettyprint">html</code>文件</p></li>
+<li><p><code class="prettyprint">build.sh</code>:无视</p></li>
+<li><p><code class="prettyprint">static-site.json</code>:发布脚本，上传<code class="prettyprint">html</code>文件和清理线上<code class="prettyprint">cdn</code>缓存</p></li>
+<li><p><code class="prettyprint">handlebar</code>:<code class="prettyprint">html</code>和<code class="prettyprint">manifest</code>模板文件，会在根目录下编译生成最终<code class="prettyprint">html</code>目录文件</p></li>
 </ul>
 
 <aside class="notice">
@@ -73,16 +73,22 @@
 </blockquote>
 <pre><code class="highlight javascript"><span class="p">{</span>
   <span class="s2">"ftpkey"</span><span class="err">:</span> <span class="s2">"cortex-ci.static-site-ftp.newwallet"</span><span class="p">,</span>
-  <span class="s2">"html_dir"</span><span class="err">:</span> <span class="s2">"html"</span>
+  <span class="s2">"html_dir"</span><span class="err">:</span> <span class="s2">"html"</span><span class="p">,</span>
+  <span class="s2">"clearCDN"</span><span class="err">:</span><span class="p">[</span><span class="s2">"h5.dianping.com/tuan/demo/index.html"</span><span class="p">]</span>
 <span class="p">}</span>
 </code></pre>
 
-<p><code class="prettyprint">html</code>文件由模板文件生成，通过构造工具配置。已配好，了解下就好。</p>
-
 <blockquote>
-<p>gulpfile.js文件部分代码(解析html代码)</p>
+<p>gulpfile.js文件部分代码(解析html和manifest代码)</p>
 </blockquote>
-<pre><code class="highlight javascript"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'html'</span><span class="p">,</span> <span class="kd">function</span><span class="p">()</span> <span class="p">{;</span>
+<pre><code class="highlight javascript"><span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'html'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+  <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">template_dir</span> <span class="o">+</span> <span class="s2">"/**/*.appcache"</span><span class="p">])</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">compiler</span><span class="p">({</span>
+      <span class="na">cwd</span><span class="p">:</span> <span class="nx">__dirname</span>
+    <span class="p">}).</span><span class="nx">compile</span><span class="p">())</span>
+    <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
+    <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">html_dir</span><span class="p">));</span>
+
   <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">([</span> <span class="nx">template_dir</span> <span class="o">+</span> <span class="s2">"/**/*.html"</span><span class="p">])</span>
     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">compiler</span><span class="p">({</span>
       <span class="na">cwd</span><span class="p">:</span> <span class="nx">__dirname</span>
@@ -90,6 +96,7 @@
     <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">'error'</span><span class="p">,</span> <span class="nx">console</span><span class="p">.</span><span class="nx">error</span><span class="p">)</span>
     <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">html_dir</span><span class="p">));</span>
 <span class="p">});</span>
+
 </code></pre>
 
 <blockquote>
@@ -98,52 +105,76 @@
 
 <p>项目打包依然基于<code class="prettyprint">cortex</code>，构建工具选择时选择<code class="prettyprint">cortex-ci</code>。</p>
 
-<p>跟传统的<code class="prettyprint">cortex-ci</code>区别：部署时候会根据根目录下<code class="prettyprint">static-site.json</code>文件，去读取相应的<code class="prettyprint">lion</code>配置的h5静态服务器地址，将<code class="prettyprint">html</code>文件上传h5静态服务器</p>
+<p>跟传统的<code class="prettyprint">cortex-ci</code>区别：部署时候会根据根目录下<code class="prettyprint">static-site.json</code>文件，去读取相应的<code class="prettyprint">lion</code>配置的h5静态服务器地址，将<code class="prettyprint">html</code>目录文件上传<code class="prettyprint">h5</code>静态服务器，并且清除线上CDN缓存(线上发布有效)</p>
 
           <h1 id="离线缓存">离线缓存</h1>
 
 <p>我们采用<code class="prettyprint">manifest</code>来实现离线缓存。</p>
 
-<p><code class="prettyprint">manifest</code>文件目前和<code class="prettyprint">html</code>放在一起，通过<code class="prettyprint">ftp</code>上传到<code class="prettyprint">h5</code>服务器上。以<code class="prettyprint">app-newwallet-static</code>项目为例。</p>
+<p><code class="prettyprint">manifest</code>源文件通过执行<code class="prettyprint">gulp manifest</code>脚本自动生成。无需人工操作。</p>
+
+<blockquote>
+<p>manifest生成脚本 示例</p>
+</blockquote>
+<pre><code class="highlight javascript">
+<span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'manifest'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span><span class="nx">cb</span><span class="p">)</span> <span class="p">{</span>
+    <span class="nx">glob</span><span class="p">(</span><span class="s2">"./handlebar/**/*.html"</span><span class="p">,</span><span class="kd">function</span><span class="p">(</span><span class="nx">err</span><span class="p">,</span><span class="nx">file</span><span class="p">){</span>
+        <span class="kd">var</span> <span class="nx">item</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">length</span> <span class="o">=</span>  <span class="nx">file</span><span class="p">.</span><span class="nx">length</span><span class="p">;</span>
+        <span class="kd">var</span> <span class="nx">index</span><span class="o">=</span><span class="mi">1</span><span class="p">;</span>
+        <span class="k">while</span><span class="p">(</span><span class="nx">item</span> <span class="o">=</span> <span class="nx">file</span><span class="p">.</span><span class="nx">shift</span><span class="p">()){</span>
+            <span class="nx">gulp</span><span class="p">.</span><span class="nx">src</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+                <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">manifest</span><span class="p">())</span>
+                <span class="p">.</span><span class="nx">pipe</span><span class="p">(</span><span class="nx">gulp</span><span class="p">.</span><span class="nx">dest</span><span class="p">(</span><span class="nx">item</span><span class="p">.</span><span class="nx">replace</span><span class="p">(</span><span class="sr">/</span><span class="se">([\w</span><span class="sr">-</span><span class="se">])</span><span class="sr">*.html/</span><span class="p">,</span><span class="s1">''</span><span class="p">)))</span>
+                <span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">"end"</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
+                    <span class="nx">index</span> <span class="o">==</span> <span class="nx">length</span> <span class="p">?</span> <span class="nx">cb</span><span class="p">()</span> <span class="p">:</span> <span class="p">(</span><span class="nx">index</span><span class="o">++</span><span class="p">);</span>
+                <span class="p">})</span>
+        <span class="p">}</span>
+    <span class="p">})</span>
+<span class="p">})</span>
+
+</code></pre>
+
+<p>生成的<code class="prettyprint">manifest</code>文件目前和<code class="prettyprint">html</code>文件放在一起，通过<code class="prettyprint">ftp</code>上传到<code class="prettyprint">h5</code>服务器上。</p>
 
 <p>跟<code class="prettyprint">html</code>一样，<code class="prettyprint">appcache</code>文件由<code class="prettyprint">appcache</code>模板文件生成。</p>
 
 <p><img src="/images/3.png"/></p>
 
 <blockquote>
-<p>appcache 示例</p>
+<p>自动生成appcache源文件 示例</p>
 </blockquote>
 <pre><code class="highlight javascript">
 <span class="nx">CACHE</span> <span class="nx">MANIFEST</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/luckymoney_background_right.png'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/luckymoney_background_middle.png'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/luckymoney_background_right.png'</span><span class="p">}}}</span>
+<span class="nx">CACHE</span> <span class="nx">MANIFEST</span>
 <span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../css/index.css'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/icon_luckymoney.png'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-x-top.png'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-x-bottom.png'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-y-left.png'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../img/repeat-y-right.png'</span><span class="p">}}}</span>
 <span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'dpapp'</span><span class="p">}}}</span>
 <span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'zepto'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'riot'</span><span class="p">}}}</span>
 <span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'hippo'</span><span class="p">}}}</span>
-<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'util-efte-loading'</span><span class="p">}}}</span>
 <span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'huatuo'</span><span class="p">}}}</span>
 <span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'model-data'</span><span class="p">}}}</span>
+<span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'util-m-loading'</span><span class="p">}}}</span>
 <span class="p">.</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span>
+<span class="p">.</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="p">?</span><span class="mi">1432725045337</span>
 <span class="nl">NETWORK</span><span class="p">:</span>
+<span class="o">*</span>
+<span class="nx">NETWORK</span><span class="p">:</span>
 <span class="o">*</span>
 
 </code></pre>
 
 <blockquote>
-<p>静态文件使用<code class="prettyprint">{{{static &#39;path&#39;}}}</code>标签</p>
+<p>本项目文件使用<code class="prettyprint">{{{static &#39;path&#39;}}}</code>标签</p>
 
-<p>依赖的<code class="prettyprint">js</code>使用<code class="prettyprint">{{{modfile &#39;dpapp&#39;}}}</code>标签</p>
-</blockquote>
+<p>依赖项目文件使用<code class="prettyprint">{{{modfile &#39;path&#39;}}}</code>标签</p>
 
-<p>扩展<code class="prettyprint">gulpfile</code>,复用处理<code class="prettyprint">html</code>逻辑。
+<p><code class="prettyprint">{{{modfile &#39;util-m-loading&#39;}}}</code>解析成主js文件路径</p>
+
+<p><code class="prettyprint">{{{modfile &#39;util-m-loading/css/index.css&#39;}}}</code>也可以直接写路径
+扩展<code class="prettyprint">gulpfile</code>,复用处理<code class="prettyprint">html</code>逻辑。
 <img src="/images/3-1.png"/></p>
+</blockquote>
 
           <h1 id="开发策略">开发策略</h1>
 
@@ -162,15 +193,17 @@
 
 </code></pre>
 
-<blockquote>
-<p>依赖<code class="prettyprint">gulp-tpl2mod</code>,自行添加</p>
-</blockquote>
+<p>新版基础样式库@志强同学跟@UED同学们一起正在努力建设中。暂时文档地址<code class="prettyprint">http://code.dianpingoa.com/zhiqiang.cao/mbase-doc/raw/master/stylesheet/index.html</code>;</p>
 
 <p><code class="prettyprint">h5</code>静态页面开发类似于单页应用了，这里采用 M/V 的模式进行开发，便于公共部分的提取以及便于项目维护。</p>
 
 <p>暂且使用数据管理组件<code class="prettyprint">model-data</code>来控制<code class="prettyprint">model</code>数据，提供了数据缓存以及数据的生命周期功能（文件地址：<code class="prettyprint">http://mo-doc.f2e.dp/#/detail/model-data</code>）</p>
 
-<p>使用<code class="prettyprint">riot</code>来控制单项<code class="prettyprint">view</code>（文档地址：https://muut.com/riotjs/）。个人推荐使用<code class="prettyprint">riot</code>来控制<code class="prettyprint">view</code>:<code class="prettyprint">api</code>较少，上手容易；兼容性强，可与其他常见库一起使用，<code class="prettyprint">zepto</code>、<code class="prettyprint">underscore</code>等；最重要是riot非常小，min下才6kb。经过升级，目前已兼容ie7及以上</p>
+<p>使用<code class="prettyprint">react</code>或<code class="prettyprint">riot</code>(被无情的修改过，可能api有点不一样)来控制单项<code class="prettyprint">view</code>。</p>
+
+<p>主推荐使用<code class="prettyprint">react</code>,之后会联合基础样式库一起打造常用公用的<code class="prettyprint">componment</code>;</p>
+
+<p>对于个别简单项目，个人推荐使用<code class="prettyprint">riot</code>来控制<code class="prettyprint">view</code>:<code class="prettyprint">api</code>较少，上手容易；兼容性强，最重要是riot非常小，min下才6kb。经过升级，目前已兼容ie7及以上</p>
 
 <p><img src="/images/4-1.png"/></p>
 
@@ -188,16 +221,16 @@
 
           <h1 id="更新机制">更新机制</h1>
 
-<p>CDN页面缓存时间为10分钟，每次发布新版时，可能需要等待10分钟才能看见新版。如处理紧急bug，可通知运维同学及时清理。</p>
+<p>CDN页面缓存时间为10分钟，每次发布新版时，或通过配置的绝对<code class="prettyprint">url</code>来清除cdn缓存，可能存在1-3分钟的延迟。</p>
 
           <h1 id="访问地址">访问地址</h1>
 
 <p>以线上为例，访问地址为<code class="prettyprint">http://h5.dianping.com/tuan/bizname/xx</code>。<code class="prettyprint">xx</code>对于<code class="prettyprint">headlerbar</code>的根目录。
-例如<code class="prettyprint">app-newwallet-static</code>项目，</p>
+例如<code class="prettyprint">app-demo-static</code>项目，</p>
 
 <p><img src="/images/6.png"/></p>
 
-<p>访问地址为<code class="prettyprint">http://h5.dianping.com/tuan/newwallet/index.html</code>;</p>
+<p>访问地址为<code class="prettyprint">http://h5.dianping.com/tuan/demo/index.html</code>;</p>
 
           <h1 id="tips">tips</h1>
 
@@ -209,6 +242,13 @@
 例：
 <br/>
 `http://192.168.5.78:3345/sync-service/riot/0.1.2`
+</aside>
+
+<aside class="notice">
+注：线上缓存清理失败后可手动调用
+<br/>
+`192.168.7.94:9567/?url=h5.dianping.com/tuan/demo/index.html`
+<br/>
 </aside>
 
       </div>
