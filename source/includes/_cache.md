@@ -37,7 +37,6 @@ gulp.task('manifest', function(cb) {
 ```javascript
 
 CACHE MANIFEST
-CACHE MANIFEST
 {{{static '../css/index.css'}}}
 {{{modfile 'dpapp'}}}
 {{{modfile 'zepto'}}}
@@ -48,8 +47,6 @@ CACHE MANIFEST
 {{{modfile 'util-m-loading'}}}
 ./index.html
 ./index.html?1432725045337
-NETWORK:
-*
 NETWORK:
 *
 
