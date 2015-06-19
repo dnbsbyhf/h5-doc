@@ -16,7 +16,11 @@ gulp.task('tpl2mod',function(){
 
 ```
 
-新版基础样式库正在努力建设中。暂时文档地址`http://code.dianpingoa.com/zhiqiang.cao/mbase-doc/raw/master/stylesheet/index.html`;
+##配套设施
+
+基础样式UI库已经完稿，后续会继续跟UED同学完成更新。文档传送门`http://mo-doc.f2e.dp/mbase-css/index.html`;
+
+引入了公共打点组件`util-h5-cat`,文档地址`http://mo-doc.f2e.dp/#/detail/util-h5-cat`;
 
 `h5`静态页面开发类似于单页应用了，这里采用 M/V 的模式进行开发，便于公共部分的提取以及便于项目维护。
 
