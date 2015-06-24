@@ -25,5 +25,5 @@
 - `handlebar`:`html`和`manifest`模板文件，会在根目录下编译生成最终`html`目录文件
 
 <aside class="notice">
-填写对应环境配置，即lionkey的值。目前lionkey暂时由专门人来负责配置，用于上传`html`文件到指定服务器上，可找徐嘉轶或者YYY来开通
+填写对应环境配置，即lionkey的值。目前lionkey暂时由专门人来负责配置(`demo`为`/tuan/demo`)，用于上传`html`文件到指定服务器上，可找徐嘉轶或者YYY来开通
 </aside>
