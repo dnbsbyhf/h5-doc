@@ -4,7 +4,7 @@
 
 - 安装静态站初始化模板 `git clone git@code.dianpingoa.com:app-static/cortex-sitey-template.git ~/.cortex/templates/sitey`
 
-- `cortex init`提示选择模板，或直接`cortex init sitey` 直接选择静态站模板
+- `cortex init`提示选择模板，或`cortex init sitey` 直接选择静态站模板
 
 - 提示`bizname`选项，填写业务名，对应的`cortex-ci.static-site-ftp.bizname`这样的`lionkey​`，这里我们以`app-demo-static`为例，填写为`demo`,目录结构如下。
 
