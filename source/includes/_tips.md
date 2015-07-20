@@ -16,3 +16,7 @@
 `192.168.7.94:9567/?url=h5.dianping.com/tuan/demo/index.html`
 <br/>
 </aside>
+
+<aside class="notice">
+注：如需`ftp`上传非`html`资源，可在当前目录下建立一个`html`目录放置。最后`html`目录资源会和被编译后的`hanldebar`目录资源一起合并上传。
+</aside>
