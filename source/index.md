@@ -6,7 +6,9 @@ language_tabs:
 
 includes:
   - create
+  - config
   - build
+  - combo
   - cache  
   - dev
   - update

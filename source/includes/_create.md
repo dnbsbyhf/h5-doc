@@ -6,7 +6,7 @@
 
 - `cortex init`提示选择模板，或`cortex init sitey` 直接选择静态站模板
 
-- 提示`bizname`选项，填写业务名，对应的`cortex-ci.static-site-ftp.bizname`这样的`lionkey​`，这里我们以`app-demo-static`为例，填写为`demo`,目录结构如下。
+- 提示`bizname`选项，填写业务名，对应的`cortex-ci.static-site-ftp.bizname`这样的`lionkey​`，这里我们以`app-demo-static`为例，填写为`demo`（项目初始化后自动生成）,目录结构如下。
 
 <img src="/images/1.png"/>
 
@@ -25,5 +25,5 @@
 - `handlebar`:`html`和`manifest`模板文件，会在根目录下编译生成最终`html`目录文件
 
 <aside class="notice">
-填写对应环境配置，即lionkey的值。目前lionkey暂时由专门人来负责配置(`demo`为`/tuan/demo`)，用于上传`html`文件到指定服务器上，可找徐嘉轶或者YYY来开通
+填写对应环境配置，即lionkey的值。用于上传`html`文件到指定服务器上，新项目可找徐嘉轶开通业务渠道。已配好项目业务渠道的同学，在<a href="http://ci.f2e.dp/">http://ci.f2e.dp/</a>下配置自己的业务。
 </aside>
