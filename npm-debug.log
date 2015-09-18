@@ -1,0 +1,56 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'middleman', '-g' ]
+2 info using npm@2.11.3
+3 info using node@v0.12.7
+4 verbose install initial load of /usr/local/lib/package.json
+5 verbose readDependencies loading dependencies from /usr/local/lib/package.json
+6 silly cache add args [ 'middleman', null ]
+7 verbose cache add spec middleman
+8 silly cache add parsed spec { raw: 'middleman',
+8 silly cache add   scope: null,
+8 silly cache add   name: 'middleman',
+8 silly cache add   rawSpec: '',
+8 silly cache add   spec: '*',
+8 silly cache add   type: 'range' }
+9 silly addNamed middleman@*
+10 verbose addNamed "*" is a valid semver range for middleman
+11 silly addNameRange { name: 'middleman', range: '*', hasData: false }
+12 silly mapToRegistry name middleman
+13 silly mapToRegistry using default registry
+14 silly mapToRegistry registry https://registry.npmjs.org/
+15 silly mapToRegistry uri https://registry.npmjs.org/middleman
+16 verbose addNameRange registry:https://registry.npmjs.org/middleman not in flight; fetching
+17 verbose request uri https://registry.npmjs.org/middleman
+18 verbose request no auth needed
+19 info attempt registry request try #1 at 14:33:16
+20 verbose request using bearer token for auth
+21 verbose request id 7728c4fbc12bb40c
+22 http request GET https://registry.npmjs.org/middleman
+23 info retry will retry, error on last attempt: Error: socket hang up
+24 info attempt registry request try #2 at 14:34:29
+25 verbose request using bearer token for auth
+26 http request GET https://registry.npmjs.org/middleman
+27 info retry will retry, error on last attempt: Error: socket hang up
+28 info attempt registry request try #3 at 14:36:31
+29 verbose request using bearer token for auth
+30 http request GET https://registry.npmjs.org/middleman
+31 verbose stack Error: socket hang up
+31 verbose stack     at createHangUpError (_http_client.js:215:15)
+31 verbose stack     at TLSSocket.socketOnEnd (_http_client.js:300:23)
+31 verbose stack     at TLSSocket.emit (events.js:129:20)
+31 verbose stack     at _stream_readable.js:908:16
+31 verbose stack     at process._tickCallback (node.js:355:11)
+32 verbose cwd /Users/yangyuanxiang/yyy/h5-static/h5-doc
+33 error Darwin 14.4.0
+34 error argv "node" "/usr/local/bin/npm" "install" "middleman" "-g"
+35 error node v0.12.7
+36 error npm  v2.11.3
+37 error code ECONNRESET
+38 error network socket hang up
+38 error network This is most likely not a problem with npm itself
+38 error network and is related to network connectivity.
+38 error network In most cases you are behind a proxy or have bad network settings.
+38 error network
+38 error network If you are behind a proxy, please make sure that the
+38 error network 'proxy' config is set properly.  See: 'npm help config'
+39 verbose exit [ 1, true ]
