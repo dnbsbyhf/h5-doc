@@ -5,25 +5,25 @@
 例如`<$- xx $>`。
 调用方可以使用一些公用的基础`tag`来完成日常开发。
 
-- <%- static(title) %>:返回模块`app-demo-static`里面样式的相关路径，一般用于图片，样式等引入。
+- <$- static(title) $>:返回模块`app-demo-static`里面样式的相关路径，一般用于图片，样式等引入。
 	
-- <%- combo_css(titles) %>:合并`css`,多个title用`,`隔开,本地开发时会被拆散为单个`css`标签，
+- <$- combo_css(titles) $>:合并`css`,多个title用`,`隔开,本地开发时会被拆散为单个`css`标签，
  
-- <%- framework %> :  返回`js`一些基础库，包括`neuron`和一些`config`
+- <$- framework $> :  返回`js`一些基础库，包括`neuron`和一些`config`
 
-- <%- combo_js_src(title) %> : 合并业务业务依赖的`js`模块，如需加上业务`js`，则`title`设为业务相关`js`即可,不需要合并业务js则为空。
+- <$- combo_js_src(title) $> : 合并业务业务依赖的`js`模块，如需加上业务`js`，则`title`设为业务相关`js`即可,不需要合并业务js则为空。
 
-- <%- facade(title) %>:门户`js`调用
+- <$- facade(title) $>:门户`js`调用
 
-- <%- timestr %> : 返回页面发布时间
+- <$- timestr $> : 返回页面发布时间
 
-- <%- env %> : 返回当前页面环境,`dev`,`beta`,`prelease`,`product`
+- <$- env $> : 返回当前页面环境,`dev`,`beta`,`prelease`,`product`
 
-- <%- version %> : 返回版本号
+- <$- version $> : 返回版本号
 
-- <%- combo_css_src(titles) %>:只返回合并后的`css`路径
+- <$- combo_css_src(titles) $>:只返回合并后的`css`路径
 
-- <%- combo_js_src(titles) %>:只返回合并后的`js`路径
+- <$- combo_js_src(titles) $>:只返回合并后的`js`路径
 
 本地模板如下：
 
