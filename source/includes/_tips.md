@@ -20,3 +20,7 @@
 <aside class="notice">
 注：如需`ftp`上传非`html`资源，可在当前目录下建立一个`html`目录放置。最后`html`目录资源会和被编译后的`hanldebar`目录资源一起合并上传。
 </aside>
+
+<aside class="notice">
+注：`npm install`之前 ，请先设置为点评的npm源 `npm config set registry http://r.npmjs.dp `
+</aside>
