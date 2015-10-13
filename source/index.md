@@ -8,7 +8,7 @@ includes:
   - create
   - config
   - build
-  - combo
+  - template
   - cache  
   - dev
   - update

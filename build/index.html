@@ -45,8 +45,8 @@
 <ul>
 <li><p>​使用cortex，需要将version升到6.1.8及以上</p></li>
 <li><p>安装静态站初始化模板 <code class="prettyprint">git clone git@code.dianpingoa.com:app-static/cortex-sitey-template.git ~/.cortex/templates/sitey</code></p></li>
-<li><p><code class="prettyprint">cortex init</code>提示选择模板，或直接<code class="prettyprint">cortex init sitey</code> 直接选择静态站模板</p></li>
-<li><p>提示<code class="prettyprint">bizname</code>选项，填写业务名，对应的<code class="prettyprint">cortex-ci.static-site-ftp.bizname</code>这样的<code class="prettyprint">lionkey​</code>，这里我们以<code class="prettyprint">app-demo-static</code>为例，填写为<code class="prettyprint">demo</code>,目录结构如下。</p></li>
+<li><p><code class="prettyprint">cortex init</code>提示选择模板，或<code class="prettyprint">cortex init sitey</code> 直接选择静态站模板</p></li>
+<li><p>提示<code class="prettyprint">bizname</code>选项，填写业务名，对应的<code class="prettyprint">cortex-ci.static-site-ftp.bizname</code>这样的<code class="prettyprint">lionkey​</code>，这里我们以<code class="prettyprint">app-demo-static</code>为例，填写为<code class="prettyprint">demo</code>（项目初始化后自动生成）,目录结构如下。</p></li>
 </ul>
 
 <p><img src="/images/1.png"/></p>
@@ -63,8 +63,24 @@
 </ul>
 
 <aside class="notice">
-填写对应环境配置，即lionkey的值。目前lionkey暂时由专门人来负责配置，用于上传`html`文件到指定服务器上，可找徐嘉轶或者YYY来开通
+填写对应环境配置，即lionkey的值。用于上传`html`文件到指定服务器上，新项目可找徐嘉轶开通业务渠道。已配好项目业务渠道的同学，在<a href="http://ci.f2e.dp/">http://ci.f2e.dp/</a>下配置自己的业务。
 </aside>
+
+          <h1 id="lionkey配置">lionkey配置</h1>
+
+<p>访问页面<a href="http://ci.f2e.dp/">http://ci.f2e.dp/</a>。以域账号登陆</p>
+
+<p><img src="/images/8-1.png"/>
+这个是已开通的业务渠道，还没申请开通的同学请找工具组同学开通下。对于已开发的业务渠道，点击添加</p>
+
+<p><img src="/images/8-2.png"/></p>
+
+<ul>
+<li>key:<code class="prettyprint">bizname</code>名</li>
+<li>path:<code class="prettyprint">bizname</code>所对应的目录，之后生成的<code class="prettyprint">html</code>会ftp上传进去</li>
+<li>parent：选择你开通业务的渠道选项</li>
+<li>desc：业务描述</li>
+</ul>
 
           <h1 id="部署、打包、上线">部署、打包、上线</h1>
 
@@ -99,13 +115,97 @@
 
 </code></pre>
 
-<blockquote>
-<p>依赖模块<code class="prettyprint">gulp-tpl2mod</code>，需自行添加</p>
-</blockquote>
-
 <p>项目打包依然基于<code class="prettyprint">cortex</code>，构建工具选择时选择<code class="prettyprint">cortex-ci</code>。</p>
 
 <p>跟传统的<code class="prettyprint">cortex-ci</code>区别：部署时候会根据根目录下<code class="prettyprint">static-site.json</code>文件，去读取相应的<code class="prettyprint">lion</code>配置的h5静态服务器地址，将<code class="prettyprint">html</code>目录文件上传<code class="prettyprint">h5</code>静态服务器，并且清除线上CDN缓存(线上发布有效)</p>
+
+          <h1 id="模板">模板</h1>
+
+<p>该模板编译器是基于<code class="prettyprint">ejs</code>的。使用时，可以根据<code class="prettyprint">ejs</code>相关语法在模板页面里面进行一些 复杂页面的编辑。
+为了避免跟某些模板编辑器起冲突，设置了<code class="prettyprint">ejs</code>标签识别为<code class="prettyprint">$</code>，
+例如<code class="prettyprint">&lt;$- xx $&gt;</code>。
+调用方可以使用一些公用的基础<code class="prettyprint">tag</code>来完成日常开发。</p>
+
+<ul>
+<li><p>&lt;%- static(title) %&gt;:返回模块<code class="prettyprint">app-demo-static</code>里面样式的相关路径，一般用于图片，样式等引入。</p></li>
+<li><p>&lt;%- combo_css(titles) %&gt;:合并<code class="prettyprint">css</code>,多个title用<code class="prettyprint">,</code>隔开,本地开发时会被拆散为单个<code class="prettyprint">css</code>标签，</p></li>
+<li><p>&lt;%- framework %&gt; :  返回<code class="prettyprint">js</code>一些基础库，包括<code class="prettyprint">neuron</code>和一些<code class="prettyprint">config</code></p></li>
+<li><p>&lt;%- combo_js_src(title) %&gt; : 合并<code class="prettyprint">js</code>,<code class="prettyprint">title</code>可以为空，业务<code class="prettyprint">js</code>依赖的<code class="prettyprint">js</code>，如需加上业务<code class="prettyprint">js</code>，则<code class="prettyprint">title</code>设为业务相关<code class="prettyprint">js</code>即可</p></li>
+<li><p>&lt;%- facade(title) %&gt;:门户<code class="prettyprint">js</code>调用</p></li>
+<li><p>&lt;%- timestr %&gt; : 返回页面发布时间</p></li>
+<li><p>&lt;%- env %&gt; : 返回当前页面环境,<code class="prettyprint">dev</code>,<code class="prettyprint">beta</code>,<code class="prettyprint">prelease</code>,<code class="prettyprint">product</code></p></li>
+<li><p>&lt;%- version %&gt; : 返回版本号</p></li>
+<li><p>&lt;%- combo_css_src(titles) %&gt;:只返回合并后的<code class="prettyprint">css</code>路径</p></li>
+<li><p>&lt;%- combo_js_src(titles) %&gt;:只返回合并后的<code class="prettyprint">js</code>路径</p></li>
+</ul>
+
+<p>本地模板如下：</p>
+
+<p><img src="/images/1-2.png"/></p>
+
+<p>线上编辑后</p>
+
+<p><img src="/images/1-3.png"/></p>
+
+<p><strong>title说明</strong></p>
+
+<p>title一般由模块名+具体路径组成。当然也可以不加具体路径，最后会被编辑成模
+块主函数js路径。</p>
+
+<p>例如</p>
+
+<p><code class="prettyprint">app-demo-static/css/style.css</code>-&gt;<code class="prettyprint">app-demo-static/version/css/style.css</code></p>
+
+<p><code class="prettyprint">app-demo-static</code>-&gt;<code class="prettyprint">app-demo-static/version/app-demo-static.js</code></p>
+
+<p><strong>扩展</strong>
+当然业务方也可以自己扩展标签，用户页面的拼接，分离出头部或者尾部，多页面共用模块什么的。</p>
+
+<p><img src="/images/1-4.png"/></p>
+
+<p>传入对象，用法可参考<code class="prettyprint">ejs</code>语法。</p>
+
+          <h1 id="combo服务">combo服务</h1>
+
+<p>H5支持combo服务，在最小的开发成本上，不动用原来<code class="prettyprint">handlebar</code>模板，另外在外层再编译一层，使用<code class="prettyprint">ejs</code>模板。</p>
+
+<p>如需使用<code class="prettyprint">combo</code>服务同学，在根目录下再新建一个<code class="prettyprint">source</code>目录，以我的钱包(<code class="prettyprint">app-newwallet-static</code>)项目为例</p>
+
+<p><img src="/images/9-4.png"/>    </p>
+
+<p>文件后缀名为<code class="prettyprint">ejs</code>，最终该<code class="prettyprint">ejs</code>会被编译到<code class="prettyprint">hanldebar</code>目录里面，编译成<code class="prettyprint">hanldebar</code>模板</p>
+
+<p>使用方法如下</p>
+
+<p><img src="/images/9-5.png"/>    </p>
+
+<p>使用了</p>
+
+<ul>
+<li><p>&lt;%- CSS(&ldquo;mbase-css/dist/mb.css,../css/index.css&rdquo;) %&gt;：合
+并组件依赖css和业务自身css，更多css用逗号隔开</p></li>
+<li><p>&lt;%- JS(&lsquo;app-newwallet-static/entries/index&rsquo;) %&gt;：将依赖的<code class="prettyprint">JS</code>组件进行打包</p></li>
+</ul>
+
+<p>当然，可能有些非常基础的js库需要隔离出来，提高多页面间资源重复利用率，可以在<code class="prettyprint">cortex.json</code>目录下配置相关不需要打包的<code class="prettyprint">js</code>库，</p>
+
+<p><img src="/images/9-6.png"/>    </p>
+
+<p>目前合并服务的脚本代码已更新到了sitey模板中，默认不合并<code class="prettyprint">js</code>库有<code class="prettyprint">zepto</code>,<code class="prettyprint">dpapp</code>,<code class="prettyprint">huatuo</code></p>
+
+<p>另外如果要使用<code class="prettyprint">combo</code>服务的同学对于在页面有涉及到<code class="prettyprint">html</code>模板的，请将业务<code class="prettyprint">html</code>模板移到<code class="prettyprint">js</code>目录里面，已防意外（已知underscore跟ejs语法相似），目前已提供了<code class="prettyprint">gulp-tpl2mod</code>模块来进行编译<code class="prettyprint">html</code>模板</p>
+
+<p>同目录编译</p>
+
+<p><img src="/images/9-1.png"/>    </p>
+
+<p>编译前源代码</p>
+
+<p><img src="/images/9-2.png"/></p>
+
+<p>编译后代码，<code class="prettyprint">js</code>中直接引入</p>
+
+<p><img src="/images/9-3.png"/></p>
 
           <h1 id="离线缓存">离线缓存</h1>
 
@@ -146,7 +246,6 @@
 </blockquote>
 <pre><code class="highlight javascript">
 <span class="nx">CACHE</span> <span class="nx">MANIFEST</span>
-<span class="nx">CACHE</span> <span class="nx">MANIFEST</span>
 <span class="p">{{{</span><span class="kr">static</span> <span class="s1">'../css/index.css'</span><span class="p">}}}</span>
 <span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'dpapp'</span><span class="p">}}}</span>
 <span class="p">{{{</span><span class="nx">modfile</span> <span class="s1">'zepto'</span><span class="p">}}}</span>
@@ -159,8 +258,6 @@
 <span class="p">.</span><span class="o">/</span><span class="nx">index</span><span class="p">.</span><span class="nx">html</span><span class="p">?</span><span class="mi">1432725045337</span>
 <span class="nl">NETWORK</span><span class="p">:</span>
 <span class="o">*</span>
-<span class="nx">NETWORK</span><span class="p">:</span>
-<span class="o">*</span>
 
 </code></pre>
 
@@ -171,15 +268,13 @@
 
 <p><code class="prettyprint">{{{modfile &#39;util-m-loading&#39;}}}</code>解析成主js文件路径</p>
 
-<p><code class="prettyprint">{{{modfile &#39;util-m-loading/css/index.css&#39;}}}</code>也可以直接写路径
-扩展<code class="prettyprint">gulpfile</code>,复用处理<code class="prettyprint">html</code>逻辑。
-<img src="/images/3-1.png"/></p>
+<p><code class="prettyprint">{{{modfile &#39;util-m-loading/css/index.css&#39;}}}</code>也可以直接写路径</p>
 </blockquote>
 
           <h1 id="开发策略">开发策略</h1>
 
 <blockquote>
-<p>gulp task 配置</p>
+<p>gulp task template模板</p>
 </blockquote>
 <pre><code class="highlight javascript">
 <span class="nx">gulp</span><span class="p">.</span><span class="nx">task</span><span class="p">(</span><span class="s1">'tpl2mod'</span><span class="p">,</span><span class="kd">function</span><span class="p">(){</span>
@@ -193,7 +288,9 @@
 
 </code></pre>
 
-<p>新版基础样式库@志强同学跟@UED同学们一起正在努力建设中。暂时文档地址<code class="prettyprint">http://code.dianpingoa.com/zhiqiang.cao/mbase-doc/raw/master/stylesheet/index.html</code>;</p>
+<p>基础样式UI库已经完稿，后续会继续跟UED同学完成更新。文档传送门<code class="prettyprint">http://mo-doc.f2e.dp/mbase-css/index.html</code>;</p>
+
+<p>引入了公共打点组件<code class="prettyprint">util-h5-cat</code>,文档地址<code class="prettyprint">http://mo-doc.f2e.dp/#/detail/util-h5-cat</code>;</p>
 
 <p><code class="prettyprint">h5</code>静态页面开发类似于单页应用了，这里采用 M/V 的模式进行开发，便于公共部分的提取以及便于项目维护。</p>
 
@@ -201,9 +298,9 @@
 
 <p>使用<code class="prettyprint">react</code>或<code class="prettyprint">riot</code>(被无情的修改过，可能api有点不一样)来控制单项<code class="prettyprint">view</code>。</p>
 
-<p>主推荐使用<code class="prettyprint">react</code>,之后会联合基础样式库一起打造常用公用的<code class="prettyprint">componment</code>;</p>
+<p>主推荐使用<code class="prettyprint">react</code>,之后会联合基础样式库一起打造常用公用的<code class="prettyprint">componment</code>，打造成一个成熟的生态圈。</p>
 
-<p>对于个别简单项目，个人推荐使用<code class="prettyprint">riot</code>来控制<code class="prettyprint">view</code>:<code class="prettyprint">api</code>较少，上手容易；兼容性强，最重要是riot非常小，min下才6kb。经过升级，目前已兼容ie7及以上</p>
+<p>对于个别简单项目，可使用<code class="prettyprint">riot</code>来控制<code class="prettyprint">view</code>:<code class="prettyprint">api</code>较少，上手容易；兼容性强，最重要是riot非常小，min下才6kb。经过升级，目前已兼容ie7及以上</p>
 
 <p><img src="/images/4-1.png"/></p>
 
@@ -221,12 +318,12 @@
 
           <h1 id="更新机制">更新机制</h1>
 
-<p>CDN页面缓存时间为10分钟，每次发布新版时，或通过配置的绝对<code class="prettyprint">url</code>来清除cdn缓存，可能存在1-3分钟的延迟。</p>
+<p>CDN页面缓存时间为10分钟，每次发布新版时，或通过<code class="prettyprint">static-site.json</code>文件配置的<code class="prettyprint">clearCDN</code>绝对路径来清除cdn缓存，可能存在1-3分钟的延迟。目前<code class="prettyprint">clearCDN</code>配置可自动生成。</p>
 
           <h1 id="访问地址">访问地址</h1>
 
-<p>以线上为例，访问地址为<code class="prettyprint">http://h5.dianping.com/tuan/bizname/xx</code>。<code class="prettyprint">xx</code>对于<code class="prettyprint">headlerbar</code>的根目录。
-例如<code class="prettyprint">app-demo-static</code>项目，</p>
+<p>以线上为例，访问地址为<code class="prettyprint">http://h5.dianping.com/业务渠道名/bizname(对应path)/xx</code>。<code class="prettyprint">xx</code>对于<code class="prettyprint">headlerbar</code>的根目录。
+例如<code class="prettyprint">app-demo-static</code>项目，业务渠道为<code class="prettyprint">tuan</code>，<code class="prettyprint">bizname</code>对应路径为为<code class="prettyprint">/demo</code></p>
 
 <p><img src="/images/6.png"/></p>
 
@@ -249,6 +346,10 @@
 <br/>
 `192.168.7.94:9567/?url=h5.dianping.com/tuan/demo/index.html`
 <br/>
+</aside>
+
+<aside class="notice">
+注：如需`ftp`上传非`html`资源，可在当前目录下建立一个`html`目录放置。最后`html`目录资源会和被编译后的`hanldebar`目录资源一起合并上传。
 </aside>
 
       </div>

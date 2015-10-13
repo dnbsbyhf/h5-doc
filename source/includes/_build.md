@@ -13,18 +13,14 @@
 > gulpfile.js文件部分代码(解析html和manifest代码)
 
 ```javascript
-gulp.task('html', function(cb) {
-  gulp.src([ template_dir + "/**/*.appcache"])
+gulp.task('ejs', function(cb) {
+  gulp.src([ template_dir + "/**/*.ejs"])
     .pipe(compiler({
-      cwd: __dirname
-    }).compile())
-    .on('error', console.error)
-    .pipe(gulp.dest(html_dir));
+        // 这里可以扩展自己的插件
 
-  gulp.src([ template_dir + "/**/*.html"])
-    .pipe(compiler({
-      cwd: __dirname
-    }).compile())
+    },{
+      ext:".html"
+    }))
     .on('error', console.error)
     .pipe(gulp.dest(html_dir));
 });

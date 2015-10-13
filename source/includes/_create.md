@@ -22,7 +22,7 @@
 
 - `static-site.json`:发布脚本，上传`html`文件和清理线上`cdn`缓存
 
-- `handlebar`:`html`和`manifest`模板文件，会在根目录下编译生成最终`html`目录文件
+- `ejs`:`html`和`manifest`模板文件，会在根目录下编译生成最终`html`目录文件
 
 <aside class="notice">
 填写对应环境配置，即lionkey的值。用于上传`html`文件到指定服务器上，新项目可找徐嘉轶开通业务渠道。已配好项目业务渠道的同学，在<a href="http://ci.f2e.dp/">http://ci.f2e.dp/</a>下配置自己的业务。
