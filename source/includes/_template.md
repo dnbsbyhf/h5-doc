@@ -11,7 +11,7 @@
  
 - <$- framework $> :  返回`js`一些基础库，包括`neuron`和一些`config`
 
-- <$- combo_js_src(title) $> : 合并业务业务依赖的`js`模块，如需加上业务`js`，则`title`设为业务相关`js`即可,不需要合并业务js则为空。
+- <$- combo_js(title) $> : 合并业务业务依赖的`js`模块，如需加上业务`js`，则`title`设为业务相关`js`即可,不需要合并业务js则为空。
 
 - <$- facade(title) $>:门户`js`调用
 
