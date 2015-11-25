@@ -3,11 +3,19 @@
 <aside class="notice">
 注：如`beta`上某些组件404，可通过访问
 <br/>
-`http://192.168.5.78:3345/sync-service/packagename/packageversion`
+`http://beta.static-sync.dp/packagename/packageversion`
 <br/>
 例：
 <br/>
-`http://192.168.5.78:3345/sync-service/riot/0.1.2`
+`http://beta.static-sync.dp/sync-service/riot/0.1.2`
+<br/>
+各种环境`sync`列表
+<br/>
+alpha: http://alpha.static-sync.dp/sync-service/packagename/packageversion
+<br/>
+beta: http://beta.static-sync.dp/sync-service/packagename/packageversion
+<br/>
+ppe: http://ppe.static-sync.dp/sync-service/packagename/packageversion
 </aside>
 
 <aside class="notice">
