@@ -10,11 +10,6 @@
     <link href="stylesheets/print.css" rel="stylesheet" type="text/css" media="print" />
       <script src="javascripts/all.js" type="text/javascript"></script>
 
-      <script>
-        $(function() {
-          setupLanguages(["javascript"]);
-        });
-      </script>
   </head>
 
   <body class="index">
@@ -26,9 +21,6 @@
     </a>
     <div class="tocify-wrapper">
       <div class="title" style="padding:10px;color:#fff;font-size:32px">H5 开发指南</div>
-        <div class="lang-selector">
-              <a href="#" data-language-name="javascript">javascript</a>
-        </div>
         <div class="search">
           <input type="text" class="search" id="input-search" placeholder="Search">
         </div>
@@ -126,7 +118,7 @@
 <li><p>&lt;$- static(title) $&gt;:返回模块<code class="prettyprint">app-demo-static</code>里面样式的相关路径，一般用于图片，样式等引入。</p></li>
 <li><p>&lt;$- combo_css(titles) $&gt;:合并<code class="prettyprint">css</code>,多个title用<code class="prettyprint">,</code>隔开,本地开发时会被拆散为单个<code class="prettyprint">css</code>标签，</p></li>
 <li><p>&lt;$- framework $&gt; :  返回<code class="prettyprint">js</code>一些基础库，包括<code class="prettyprint">neuron</code>和一些<code class="prettyprint">config</code></p></li>
-<li><p>&lt;$- combo_js_src(title) $&gt; : 合并业务业务依赖的<code class="prettyprint">js</code>模块，如需加上业务<code class="prettyprint">js</code>，则<code class="prettyprint">title</code>设为业务相关<code class="prettyprint">js</code>即可,不需要合并业务js则为空。</p></li>
+<li><p>&lt;$- combo_js(title) $&gt; : 合并业务业务依赖的<code class="prettyprint">js</code>模块，如需加上业务<code class="prettyprint">js</code>，则<code class="prettyprint">title</code>设为业务相关<code class="prettyprint">js</code>即可,不需要合并业务js则为空。</p></li>
 <li><p>&lt;$- facade(title) $&gt;:门户<code class="prettyprint">js</code>调用</p></li>
 <li><p>&lt;$- timestr $&gt; : 返回页面发布时间</p></li>
 <li><p>&lt;$- env $&gt; : 返回当前页面环境,<code class="prettyprint">dev</code>,<code class="prettyprint">beta</code>,<code class="prettyprint">prelease</code>,<code class="prettyprint">product</code></p></li>
@@ -166,14 +158,6 @@
 
           <h1 id="离线缓存">离线缓存</h1>
 
-<p>我们采用<code class="prettyprint">manifest</code>来实现离线缓存。</p>
-
-<p><code class="prettyprint">mainfest</code>文件将由<code class="prettyprint">gulp</code>自动生成，调用者手动选择是否引用</p>
-
-<p>引用示例：</p>
-
-<p><img src="/images/1-5.png"/></p>
-
 <blockquote>
 <p>gulpfile.js文件部分代码(manifest代码)</p>
 </blockquote>
@@ -191,8 +175,17 @@
         <span class="p">}</span>
     <span class="p">});</span>
 <span class="p">});</span>
-
 </code></pre>
+
+<p>我们采用<code class="prettyprint">manifest</code>来实现离线缓存。</p>
+
+<p><code class="prettyprint">mainfest</code>文件将由<code class="prettyprint">gulp</code>自动生成，调用者手动选择是否引用</p>
+
+<p>额外生成文件
+<img src="/images/1-6.png"/></p>
+
+<p>引用示例：
+<img src="/images/1-5.png"/></p>
 
           <h1 id="开发策略">开发策略</h1>
 
@@ -213,7 +206,7 @@
 
 <p>基础样式UI库已经完稿，后续会继续跟UED同学完成更新。文档传送门<code class="prettyprint">http://mo-doc.f2e.dp/mbase-css/index.html</code>;</p>
 
-<p>引入了公共打点组件<code class="prettyprint">util-h5-cat</code>,文档地址<code class="prettyprint">http://mo-doc.f2e.dp/#/detail/util-h5-cat</code>;</p>
+<p>引入了公共打点组件<code class="prettyprint">util-h5-cat</code>,文档地址<code class="prettyprint">http://mo-doc.f2e.dp/#/detail/huatuo</code>;</p>
 
 <p><code class="prettyprint">h5</code>静态页面开发类似于单页应用了，这里采用 M/V 的模式进行开发，便于公共部分的提取以及便于项目维护。</p>
 
@@ -257,11 +250,19 @@
 <aside class="notice">
 注：如`beta`上某些组件404，可通过访问
 <br/>
-`http://192.168.5.78:3345/sync-service/packagename/packageversion`
+`http://beta.static-sync.dp/packagename/packageversion`
 <br/>
 例：
 <br/>
-`http://192.168.5.78:3345/sync-service/riot/0.1.2`
+`http://beta.static-sync.dp/sync-service/riot/0.1.2`
+<br/>
+各种环境`sync`列表
+<br/>
+alpha: http://alpha.static-sync.dp/sync-service/packagename/packageversion
+<br/>
+beta: http://beta.static-sync.dp/sync-service/packagename/packageversion
+<br/>
+ppe: http://ppe.static-sync.dp/sync-service/packagename/packageversion
 </aside>
 
 <aside class="notice">
@@ -281,9 +282,6 @@
 
       </div>
       <div class="dark-box">
-          <div class="lang-selector">
-                <a href="#" data-language-name="javascript">javascript</a>
-          </div>
       </div>
     </div>
   </body>
