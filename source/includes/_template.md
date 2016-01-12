@@ -11,7 +11,11 @@
  
 - <$- framework $> :  返回`js`一些基础库，包括`neuron`和一些`config`
 
-- <$- combo_js(title) $> : 合并业务业务依赖的`js`模块，如需加上业务`js`，则`title`设为业务相关`js`即可,不需要合并业务js则为空。
+- <$- combo_js(title) $> :强烈推荐使用，有利于`js`依赖提前加载，不论是否需要合并。当合并时候， 如需加上业务`js`，则`title`设为业务相关`js`即可,不需要合并业务js则为空。当`nocombo`为`true`时候，依赖`js`将分别拆散加载。
+
+- <$- cat $>:页面资源监控，置于顶部使用
+
+- <$- cat_listener $>:个性化资源监控，放在自我定的`<img>`  `<script>`  `<link>` 外部资源加载标签上。例:`<img  <$- cat_listener $> src="<$- static('app-demo-static/img/e.jpg') $>" />`
 
 - <$- facade(title) $>:门户`js`调用
 
